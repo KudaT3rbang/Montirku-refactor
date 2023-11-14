@@ -1,0 +1,21 @@
+{
+  "name": "montirku-refactor",
+  "version": "1.0.0",
+  "description": "Montirku, app to get montir",
+  "main": "server.js",
+  "scripts": {
+    "watch": "nodemon server.js"
+  },
+  "author": "Nathanael Gilberth",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "nedb": "^1.8.0",
+    "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.53.0",
+    "eslint-config-google": "^0.14.0"
+  }
+}

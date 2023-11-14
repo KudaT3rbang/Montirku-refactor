@@ -1,0 +1,33 @@
+### Database
+id - nedbID
+orderStatus - (Active, Finished)
+userKey - (eg. 1234)
+userLat - (Current lat)
+userLon - (Current lon)
+userProb - (String)
+montirKey - (eg. 9876)
+montirLat - (Current montir lat)
+montirLon - (Current montir lon)
+montirStatus - (Fetching-Montir, Montir-OTW, Montir-Arrived)
+
+### User flow
+User mencari montir (Masukkan permasalahan, lokasi) -> User diarahkan ke page currentOrder
+-> di page currentOrder, user dapat melihat status montir (montirStatus) -> Ketika montir
+menyelesaikan orderan, user dapat kembali mengorder montir lagi
+
+* Apabila user memiliki order aktif maka user tidak bisa mengorder montir, user langsung
+diarahkan ke page currentOrder
+
+### Montir flow
+Montir menunggu di page checkorder, ketika ada orderan maka akan ditampilkan di page -> Ketika montir
+mengambil orderan, ambil lokasi milik montir dan ganti status di database (montirStatus = montir-OTW, 
+upload lokasi) -> Montir akan dialihkan ke page currentOrder -> Akan ditampilkan map lokasi user dan
+lokasi montir sekarang (Diupdate tiap 5 detik) dan juga tombol bila montir sudah sampai tujuan
+-> Apabila montir sudah sampai di tujuan, montir klik tombol sampai tujuan, lalu upload status ke server
+(montirStatus = Montir-Arrived) -> Akan muncul tombol untuk menyelesaikan orderan, kalau ditekan upload
+ke server bahwa orderan sudah terselesaikan (orderStatus = Finished) -> Montir dapat kembali ke page
+checkorder untuk mencari oderan lagi
+
+* Apabila montir memiliki order aktif (orderStatus = Active), maka montir harus menyelesaikan order terlebih
+dahulu.
+* Apabila "montirStatus = Montir-Arrived" maka tidak perlu update lokasi lagi
