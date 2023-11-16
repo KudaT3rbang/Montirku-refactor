@@ -67,6 +67,7 @@ function checkOrder() {
 }
 
 // Fungsi untuk mengambil orderan dan upload data ke database
+// eslint-disable-next-line no-unused-vars
 function takeOrder(id) {
 	clearInterval(intervalId);
 	if (navigator.geolocation) {
