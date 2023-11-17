@@ -86,6 +86,15 @@ app.post("/take-order", (req, res) => {
 	res.json({takeOrder: "berhasil"});
 });
 
+// Route untuk upload lokasi montir
+app.post("/update-location-montir", (req, res) => {
+	const data = req.body;
+	// https://stackoverflow.com/questions/33590114/update-a-row-in-nedb (Remove new line of data after replace)
+	databaseOrder.update({orderStatus: "active", montirKey: data.montirKey}, {$set: {montirLat: data.montirLat, montirLon: data.montirLon}}, {}, () => {
+		databaseOrder.loadDatabase();
+	});
+});
+
 // Route yang digunakan ketika user menyelesaikan orderan
 app.post("/finish-order-user", (req, res) => {
 	const dataKey = req.body.userKey;
