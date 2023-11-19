@@ -142,5 +142,3 @@ app.post("/montir-arrived", (req, res) => {
 	});
 	res.end();
 });
-
-module.exports = app;
