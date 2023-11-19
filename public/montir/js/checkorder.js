@@ -96,7 +96,7 @@ function takeOrder(id) {
 				.then(response => response.json())
 				.then(result => {
 					if(result) {
-						window.location.href = "http://localhost:5500/montir/currentorder.html";
+						window.location.href = "currentorder.html";
 					}
 				})
 				.catch(error => showError(error));

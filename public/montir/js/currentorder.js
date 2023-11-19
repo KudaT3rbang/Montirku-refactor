@@ -39,7 +39,7 @@ function cancelOrder() {
 	fetch("/cancel-order-montir", option)
 		.then(response => {
 			if(response) {
-				window.location.href = "http://localhost:5500/montir/checkorder.html";
+				window.location.href = "checkorder.html";
 			}
 		});
 }

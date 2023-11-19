@@ -26,7 +26,7 @@ function cancelOrder() {
 	fetch("/cancel-order-user", option)
 		.then(response => {
 			if(response) {
-				window.location.href = "http://localhost:5500/user/getmontir.html";
+				window.location.href = "getmontir.html";
 			}
 		});
 }
@@ -48,7 +48,7 @@ function finishOrder() {
 	fetch("/finish-order-user", option)
 		.then(response => {
 			if(response) {
-				window.location.href = "http://localhost:5500/user/getmontir.html";
+				window.location.href = "getmontir.html";
 			}
 		});
 }
