@@ -9,9 +9,10 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 const divCurrentOrder = document.getElementById("currentOrder");
 const orderStatusText = document.getElementById("orderStatus");
 
+// Tambahkan marker user dan montir
 function addMarker(userLon, userLat, montirLon, montirLat) {
 	groupMarker.clearLayers();
-    console.log(userLon, userLat, montirLon, montirLat);
+	console.log(userLon, userLat, montirLon, montirLat);
 	const userMarker = L.marker({ lng: userLon, lat: userLat });
 	const montirMarker = L.marker({ lng: montirLon, lat: montirLat });
 
@@ -21,6 +22,51 @@ function addMarker(userLon, userLat, montirLon, montirLat) {
 	map.fitBounds(groupMarker.getBounds());
 }
 
+function cancelOrder() {
+	const cancelButton = document.getElementById("cancelButton");
+	cancelButton.setAttribute("aria-busy", "true");
+	const data = {
+		montirKey: key,
+	};
+  
+	const option = {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(data)
+	};
+	fetch("/cancel-order-montir", option)
+		.then(response => {
+			if(response) {
+				window.location.href = "http://localhost:5500/montir/checkorder.html";
+			}
+		});
+}
+
+function finishOrder() {
+	const finishButton = document.getElementById("finishButton");
+	finishButton.setAttribute("aria-busy", "true");
+	const data = {
+		montirKey: key,
+	};
+  
+	const option = {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(data)
+	};
+	fetch("/finish-order-montir", option)
+		.then(response => {
+			if(response) {
+				location.reload();
+			}
+		});
+}
+
+// Upload lokasi montir
 function uploadLocation() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(position => {
@@ -48,6 +94,30 @@ function uploadLocation() {
 	}
 }
 
+function montirArrived() {
+	const arrivedButton = document.getElementById("arrivedButton");
+	arrivedButton.setAttribute("aria-busy", "true");
+	const data = {
+		montirKey: key,
+	};
+  
+	const option = {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(data)
+	};
+
+	fetch("/montir-arrived", option)
+		.then(response => {
+			if(response) {
+				location.reload();
+			}
+		});
+}
+
+// Cek orderan
 function checkOrder() {
 	const data = {
 		montirKey: key,
@@ -63,25 +133,40 @@ function checkOrder() {
   
 	fetch("/check-order-montir", option)
 		.then(response => response.json())
-		.then(result => {	
+		.then(result => {
 			if (result.orderExist == 0) {
-				clearInterval(intervalId);
-				orderStatusText.innerText = "There is no active order";
-			} else if(result.montirStatus == "montir-arrived") {
 				clearInterval(intervalUploadLocation);
 				clearInterval(intervalCheckOrder);
+				orderStatusText.innerText = "There is no active order";
+			} else if(result.montirStatus == "montir-otw") {
 				addMarker(result.userLon, result.userLat, result.montirLon, result.montirLat);
+				const cancelButtonExist = document.getElementById("cancelButton");
+				const arrivedButtonExist = document.getElementById("arrivedButton");
+				if (!cancelButtonExist && !arrivedButtonExist) {
+					const buttonCancel = document.createElement("button");
+					buttonCancel.classList.add("warning");
+					buttonCancel.textContent = "Cancel Order";
+					buttonCancel.setAttribute("id", "cancelButton");
+					buttonCancel.onclick = () => cancelOrder();
+					divCurrentOrder.appendChild(buttonCancel);
+					const buttonArrived = document.createElement("button");
+					buttonArrived.textContent = "Montir Arrived";
+					buttonArrived.setAttribute("id", "arrivedButton");
+					buttonArrived.onclick = () => montirArrived();
+					divCurrentOrder.appendChild(buttonArrived);
+				}
 			} else {
 				clearInterval(intervalUploadLocation);
 				clearInterval(intervalCheckOrder);
 				addMarker(result.userLon, result.userLat, result.montirLon, result.montirLat);
-				const finishButton = divCurrentOrder.querySelector("button");
-				// if (!finishButton) {
-				// 	const buttonDone = document.createElement("button");
-				// 	buttonDone.textContent = "Finish Order";
-				// 	buttonDone.onclick = () => finishOrder();
-				// 	divCurrentOrder.appendChild(buttonDone);
-				// }
+				const finishButtonExist = document.getElementById("finishButton");
+				if (!finishButtonExist) {
+					const buttonFinish = document.createElement("button");
+					buttonFinish.textContent = "Finish Order";
+					buttonFinish.setAttribute("id", "finishButton");
+					buttonFinish.onclick = () => finishOrder();
+					divCurrentOrder.appendChild(buttonFinish);
+				}
 			}
 		})
 		.catch(error => showError(error));

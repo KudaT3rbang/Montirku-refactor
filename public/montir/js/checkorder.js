@@ -20,14 +20,13 @@ function fetchOrder() {
 			} else {
 				// Bila ada order buat div baru untuk orderan, tetap fetch
 				for(let data of orderData) {
-					const orderChildDiv = document.createElement("div");
-					orderChildDiv.classList.add("orderChildDiv");
+					const orderChildDiv = document.createElement("article");
 					orderChildDiv.innerHTML += `
                         <p>Latitude: ${data.userLat}</p>
                         <p>Longitude: ${data.userLon}</p>
                         <p>User Problem: ${data.userProb}</p>
                         <p>Status: ${data.montirStatus}</p>
-                        <button onclick="takeOrder('${data._id}')">Take Order</button>
+                        <button onclick="takeOrder('${data._id}')" id='${data._id}'>Take Order</button>
                     `;
 					orderDiv.append(orderChildDiv);
 				}
@@ -69,6 +68,8 @@ function checkOrder() {
 // Fungsi untuk mengambil orderan dan upload data ke database
 // eslint-disable-next-line no-unused-vars
 function takeOrder(id) {
+	const orderChild = document.getElementById(id);
+	orderChild.setAttribute("aria-busy", "true");
 	clearInterval(intervalId);
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(position => {
@@ -93,7 +94,11 @@ function takeOrder(id) {
 
 			fetch("/take-order", option)
 				.then(response => response.json())
-				.then(result => console.log(result))
+				.then(result => {
+					if(result) {
+						window.location.href = "http://localhost:5500/montir/currentorder.html";
+					}
+				})
 				.catch(error => showError(error));
 		}, showError);
 	} else {

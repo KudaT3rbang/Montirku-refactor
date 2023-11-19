@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/pico.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin=""/>
@@ -13,13 +14,18 @@
     <title>Search for montir</title>
 </head>
 <body>
-    <h1>Report Problem</h1>
-    <div id="map"></div>
-    <form id="reportForm">
-        <label for="problem" id="problemLabel">Please describe your problem</label>
-        <input type="text" name="userProblem" id="userProblem">
-        <button id="problemButton">Report Problem</button>
-    </form>
+    <main class="container" id="main-container">
+        <hgroup>
+            <h1>Report Your Problem</h1>
+            <p id="desc">Your current position is shown on the map.</p>
+        </hgroup>
+        <div id="map"></div>
+        <form id="reportForm">
+            <label for="problem" id="problemLabel">Please describe your problem</label>
+            <input type="text" name="userProblem" id="userProblem" placeholder="e.g Car won't start" required>
+            <button id="problemButton">Report Problem</button>
+        </form>
+    </main>
     <script src="./js/getmontir.js"></script>
 </body>
 </html>

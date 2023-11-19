@@ -32,22 +32,26 @@ function checkOrderStatus(keyType, keyValue, res) {
 				montirStatus: docs[0].montirStatus,
 				montirLat: docs[0].montirLat,
 				montirLon: docs[0].montirLon,
-				userLat: docs[0].montirLat,
-				userLon: docs[0].montirLon
+				userLat: docs[0].userLat,
+				userLon: docs[0].userLon
 			});
 		}
 	});
 }
 
 // Fungsi mengambil key user/montir untuk menyelesaikan orderan
-function finishOrder(keyType, keyValue, res) {
+function overwriteOrder(keyType, keyValue, status, res) {
 	let query = {
 		orderStatus: "active",
 	};
 	query[keyType] = keyValue;
-	databaseOrder.update(query, {$set:{orderStatus: "finished"}}, {}, () => {
+	let overwrite = {
+		orderStatus: status
+	};
+	databaseOrder.update(query, {$set: overwrite}, {}, () => {
 		databaseOrder.loadDatabase();
 	});
+	res.end();
 }
 
 // Route untuk cek apakah user memiliki order aktif
@@ -93,10 +97,48 @@ app.post("/update-location-montir", (req, res) => {
 	databaseOrder.update({orderStatus: "active", montirKey: data.montirKey}, {$set: {montirLat: data.montirLat, montirLon: data.montirLon}}, {}, () => {
 		databaseOrder.loadDatabase();
 	});
+	res.end();
+});
+
+// Route untuk upload lokasi user
+app.post("/update-location-user", (req, res) => {
+	const data = req.body;
+	// https://stackoverflow.com/questions/33590114/update-a-row-in-nedb (Remove new line of data after replace)
+	databaseOrder.update({orderStatus: "active", userKey: data.userKey}, {$set: {userLat: data.userLat, userLon: data.userLon}}, {}, () => {
+		databaseOrder.loadDatabase();
+	});
+	res.end();
 });
 
 // Route yang digunakan ketika user menyelesaikan orderan
 app.post("/finish-order-user", (req, res) => {
 	const dataKey = req.body.userKey;
-	finishOrder("userKey", dataKey, res);
+	overwriteOrder("userKey", dataKey, "finished", res);
+});
+
+// Route yang digunakan ketika user menyelesaikan orderan
+app.post("/cancel-order-user", (req, res) => {
+	const dataKey = req.body.userKey;
+	overwriteOrder("userKey", dataKey, "cancelled", res);
+});
+
+// Route yang digunakan ketika user menyelesaikan orderan
+app.post("/finish-order-montir", (req, res) => {
+	const dataKey = req.body.montirKey;
+	overwriteOrder("montirKey", dataKey, "finished", res);
+});
+
+// Route yang digunakan ketika user menyelesaikan orderan
+app.post("/cancel-order-montir", (req, res) => {
+	const dataKey = req.body.montirKey;
+	overwriteOrder("montirKey", dataKey, "cancelled", res);
+});
+
+app.post("/montir-arrived", (req, res) => {
+	const data = req.body;
+	// https://stackoverflow.com/questions/33590114/update-a-row-in-nedb (Remove new line of data after replace)
+	databaseOrder.update({orderStatus: "active", montirKey: data.montirKey}, {$set: {montirStatus: "montir-arrived"}}, {}, () => {
+		databaseOrder.loadDatabase();
+	});
+	res.end();
 });

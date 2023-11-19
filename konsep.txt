@@ -1,6 +1,6 @@
 ### Database
 id - nedbID
-orderStatus - (Active, Finished)
+orderStatus - (Active, Finished, Cancelled)
 userKey - (eg. 1234)
 userLat - (Current lat)
 userLon - (Current lon)

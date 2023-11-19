@@ -1,7 +1,9 @@
 /* eslint-disable no-undef */
-// localStorage.setItem("userKey", "01234");
+localStorage.setItem("userKey", "01234");
 let key = localStorage.getItem("userKey");
+const mainContainer = document.getElementById("main-container");
 const submitButton = document.getElementById("problemButton");
+const descOrder = document.getElementById("desc");
 const htmlMap = document.getElementById("map");
 const inputForm = document.getElementById("reportForm");
 var map = L.map("map").setView([0, 0], 13);
@@ -29,10 +31,12 @@ function hideForm() {
 	htmlMap.style.display = "none";
 	inputForm.style.display = "none";
 	submitButton.style.display = "none";
+	descOrder.style.display = "none";
 }
 
 // Submit order ke server dengan data
 function submitOrder() {
+	submitButton.setAttribute("aria-busy", "true");
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(position => {
 			const lat = position.coords.latitude;
@@ -61,7 +65,11 @@ function submitOrder() {
 
 			fetch("/submit-order", option)
 				.then(response => response.json())
-				.then(result => console.log(result))
+				.then(result => {
+					if(result) {
+						location.reload();
+					}
+				})
 				.catch(error => showError(error));
 		}, showError);
 	} else {
@@ -95,7 +103,7 @@ function checkOrder() {
 				<p>There is active order, please check it at active order page.</p>
 				<a href="./currentOrder.html"><button>Active Order Page</button></a>
 				`;
-				document.body.append(divOrderActive);
+				mainContainer.append(divOrderActive);
 			} 
 			else {
 				showLocation();

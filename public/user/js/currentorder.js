@@ -9,7 +9,9 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 const orderStatusText = document.getElementById("orderStatus");
 const divCurrentOrder = document.getElementById("currentOrder");
 
-function finishOrder() {
+function cancelOrder() {
+	const cancelButton = document.getElementById("cancelButton");
+	cancelButton.setAttribute("aria-busy", "true");
 	const data = {
 		userKey: key,
 	};
@@ -21,9 +23,37 @@ function finishOrder() {
 		},
 		body: JSON.stringify(data)
 	};
-	fetch("/finish-order-user", option);
+	fetch("/cancel-order-user", option)
+		.then(response => {
+			if(response) {
+				window.location.href = "http://localhost:5500/user/getmontir.html";
+			}
+		});
 }
 
+function finishOrder() {
+	const finishButton = document.getElementById("finishButton");
+	finishButton.setAttribute("aria-busy", "true");
+	const data = {
+		userKey: key,
+	};
+  
+	const option = {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(data)
+	};
+	fetch("/finish-order-user", option)
+		.then(response => {
+			if(response) {
+				window.location.href = "http://localhost:5500/user/getmontir.html";
+			}
+		});
+}
+
+// Tambahkan marker user dan montir
 function addMarker(userLon, userLat, montirLon, montirLat) {
 	groupMarker.clearLayers();
 	orderStatusText.innerText = "Montir is on the way";
@@ -36,6 +66,35 @@ function addMarker(userLon, userLat, montirLon, montirLat) {
 	map.fitBounds(groupMarker.getBounds());
 }
 
+// Upload lokasi user
+function uploadLocation() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(position => {
+			const lat = position.coords.latitude;
+			const lon = position.coords.longitude;
+
+			const data = {
+				userKey: key,
+				userLat: lat,
+				userLon: lon
+			};
+
+			const option = {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(data)
+			};
+
+			fetch("/update-location-user", option);
+		}, showError);
+	} else {
+		alert("Geolocation is not supported by this browser.");
+	}
+}
+
+// Check orderan apakah ada order atau tidak
 function checkOrder() {
 	const data = {
 		userKey: key,
@@ -53,19 +112,40 @@ function checkOrder() {
 		.then(response => response.json())
 		.then(result => {	
 			if (result.orderExist == 0) {
-				clearInterval(intervalId);
+				clearInterval(intervalUploadLocation);
+				clearInterval(intervalCheckOrder);
 				orderStatusText.innerText = "There is no active order";
 			} else if(result.montirStatus == "fetching-montir") {
+				const cancelButtonExist = document.getElementById("cancelButton");
+				if (!cancelButtonExist) {
+					const buttonCancel = document.createElement("button");
+					buttonCancel.classList.add("warning");
+					buttonCancel.textContent = "Cancel Order";
+					buttonCancel.setAttribute("id", "cancelButton");
+					buttonCancel.onclick = () => cancelOrder();
+					divCurrentOrder.appendChild(buttonCancel);
+				}
 				orderStatusText.innerText = "Searching for montir";
 			} else if(result.montirStatus == "montir-otw") {
 				addMarker(result.userLon, result.userLat, result.montirLon, result.montirLat);
+				const cancelButtonExist = document.getElementById("cancelButton");
+				if (!cancelButtonExist) {
+					const buttonCancel = document.createElement("button");
+					buttonCancel.classList.add("warning");
+					buttonCancel.textContent = "Cancel Order";
+					buttonCancel.setAttribute("id", "cancelButton");
+					buttonCancel.onclick = () => cancelOrder();
+					divCurrentOrder.appendChild(buttonCancel);
+				}
 			} else {
-				clearInterval(intervalId);
+				clearInterval(intervalUploadLocation);
+				clearInterval(intervalCheckOrder);
 				addMarker(result.userLon, result.userLat, result.montirLon, result.montirLat);
-				const finishButton = divCurrentOrder.querySelector("button");
-				if (!finishButton) {
+				const finishButtonExist = document.getElementById("finishButton");
+				if (!finishButtonExist) {
 					const buttonDone = document.createElement("button");
 					buttonDone.textContent = "Finish Order";
+					buttonDone.setAttribute("id", "finishButton");
 					buttonDone.onclick = () => finishOrder();
 					divCurrentOrder.appendChild(buttonDone);
 				}
@@ -79,6 +159,6 @@ function showError(error) {
 }
 
 window.onload = () => {
-	checkOrder();
-	intervalId = setInterval(checkOrder, 5000);
+	intervalUploadLocation = setInterval(uploadLocation, 5000);
+	intervalCheckOrder = setInterval(checkOrder, 5000);
 };
