@@ -16,6 +16,9 @@ app.use(express.json());
 const databaseOrder = new Datastore("databaseOrder.db");
 databaseOrder.loadDatabase();
 
+const databaseUser = new Datastore("databaseUser.db");
+databaseUser.loadDatabase();
+
 // Fungsi untuk mencek status orderan dan update koordinat user dan montir
 function checkOrderStatus(keyType, keyValue, res) {
 	let query = {
@@ -141,4 +144,28 @@ app.post("/montir-arrived", (req, res) => {
 		databaseOrder.loadDatabase();
 	});
 	res.end();
+});
+
+app.post("/sign-up", (req, res) => {
+	let data = req.body;
+	databaseUser.find({userName: data.userName}, (err, docs) => {
+		console.log(docs);
+		if(docs.length == 0) {
+			databaseUser.insert(data);
+			res.json({signUpSuccess: true});
+		} else {
+			res.json({signUpSuccess: false});
+		}
+	});
+});
+
+app.post("/log-in", (req, res) => {
+	let data = req.body;
+	databaseUser.find({userName: data.userName, userPassword: data.userPassword, userType: data.userType}, (err, docs) => {
+		if(docs.length == 0) {
+			res.end();
+		} else {
+			res.json(docs[0]);
+		}
+	});
 });

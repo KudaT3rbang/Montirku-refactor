@@ -10,6 +10,12 @@ montirLat - (Current montir lat)
 montirLon - (Current montir lon)
 montirStatus - (Fetching-Montir, Montir-OTW, Montir-Arrived)
 
+### Database User
+id - nedbID
+userName - (string)
+userPassword - (string)
+userType - (Montir, Customer)
+
 ### User flow
 User mencari montir (Masukkan permasalahan, lokasi) -> User diarahkan ke page currentOrder
 -> di page currentOrder, user dapat melihat status montir (montirStatus) -> Ketika montir

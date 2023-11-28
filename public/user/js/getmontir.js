@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
-localStorage.setItem("userKey", "01234");
-let key = localStorage.getItem("userKey");
+let key = localStorage.getItem("customerKey");
 const mainContainer = document.getElementById("main-container");
 const submitButton = document.getElementById("problemButton");
 const descOrder = document.getElementById("desc");

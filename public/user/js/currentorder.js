@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-let key = localStorage.getItem("userKey");
+let key = localStorage.getItem("customerKey");
 var map = L.map("map").setView([0, 0], 13);
 let groupMarker = new L.featureGroup();
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {

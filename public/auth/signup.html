@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/pico.css">
+    <title>Signup Page</title>
+</head>
+<body>
+    <main class="container custom-index-container">
+        <div id="signupStatus"></div>
+        <hgroup>
+            <h1>Sign Up Page</h1>
+            <p>Create new account</p>
+        </hgroup>
+        <form>
+            <label for="username">
+                Username
+                <input type="text" id="userName" name="username" placeholder="Username" required>
+            </label>
+            <label for="password">
+                Password
+            <input type="password" id="userPassword" name="userpassword" placeholder="Password" required>
+            
+            </label>
+            <fieldset>
+                <legend>Daftar Sebagai</legend>
+                <label for="customer">
+                  <input type="radio" id="customer" name="userType" value="customer" checked>
+                  Customer
+                </label>
+                <label for="montir">
+                  <input type="radio" id="montir" name="userType" value="montir">
+                  Montir
+                </label>
+            </fieldset>
+            <button type="submit" id="signupButton">Sign Up</button>
+          </form>
+    </main>
+    <script src="./js/signup.js"></script>
+</body>
+</html>

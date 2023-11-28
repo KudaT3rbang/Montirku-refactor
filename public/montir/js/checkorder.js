@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-localStorage.setItem("montirKey", "9876");
 let montirKey = localStorage.getItem("montirKey");
 const divOrderActive = document.getElementById("orderActive");
 
