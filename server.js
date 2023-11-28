@@ -149,7 +149,6 @@ app.post("/montir-arrived", (req, res) => {
 app.post("/sign-up", (req, res) => {
 	let data = req.body;
 	databaseUser.find({userName: data.userName}, (err, docs) => {
-		console.log(docs);
 		if(docs.length == 0) {
 			databaseUser.insert(data);
 			res.json({signUpSuccess: true});
@@ -163,9 +162,15 @@ app.post("/log-in", (req, res) => {
 	let data = req.body;
 	databaseUser.find({userName: data.userName, userPassword: data.userPassword, userType: data.userType}, (err, docs) => {
 		if(docs.length == 0) {
-			res.end();
+			res.json({
+				status: "failed"
+			});
 		} else {
-			res.json(docs[0]);
+			res.json({
+				userType: docs[0].userType,
+				_id: docs[0]._id,
+				status: "success"
+			});
 		}
 	});
 });

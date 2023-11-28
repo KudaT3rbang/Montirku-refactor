@@ -1,10 +1,10 @@
 const loginButton = document.getElementById("loginButton");
 const loginStatus = document.getElementById("loginStatus");
 
-function showModal(status) {
+function showModal(status, redirect) {
 	loginButton.setAttribute("aria-busy", "false");
 	loginStatus.innerHTML = "";
-	if(status == 1) {
+	if(status == 1 && redirect == "customer") {
 		loginStatus.innerHTML += `
             <dialog open>
             <article>
@@ -13,7 +13,21 @@ function showModal(status) {
               Redirecting...
             </p>
             <footer>
-            <button class="inline-button" onclick="window.location='./login.html';">Login Page</button>
+            <button class="inline-button" onclick="window.location='../user/index.html';">Login Page</button>
+            </footer>
+            </article>
+            </dialog>
+        `;
+	} else if (status == 1 && redirect == "montir") {
+		loginStatus.innerHTML += `
+            <dialog open>
+            <article>
+            <h3>Login Success!</h3>
+            <p>
+              Redirecting...
+            </p>
+            <footer>
+            <button class="inline-button" onclick="window.location='../montir/index.html';">Login Page</button>
             </footer>
             </article>
             </dialog>
@@ -71,17 +85,20 @@ function logIn() {
 		fetch("/log-in", option)
 			.then(response => response.json())
 			.then(result => {
-				if(result != null) {
+				if(result.status == "success") {
+					console.log(result);
+					localStorage.clear();
 					if(result.userType == "customer") {
+						
 						localStorage.setItem("customerKey", result._id);
+						showModal(1, "customer");
 					} else {
 						localStorage.setItem("montirKey", result._id);
+						showModal(1, "montir");
 					}
-
-					
-					showModal(1);
 				} else {
-					showModal(0);
+					console.log(result);
+					showModal(0, "error");
 				}
 			});
 	}

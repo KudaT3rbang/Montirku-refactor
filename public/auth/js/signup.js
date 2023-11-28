@@ -67,6 +67,7 @@ function signUp() {
 			},
 			body: JSON.stringify(data)
 		};
+		console.log(data);
 		fetch("/sign-up", option)
 			.then(response => response.json())
 			.then(result => {
