@@ -89,7 +89,6 @@ function logIn() {
 					console.log(result);
 					localStorage.clear();
 					if(result.userType == "customer") {
-						
 						localStorage.setItem("customerKey", result._id);
 						showModal(1, "customer");
 					} else {

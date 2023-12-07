@@ -18,17 +18,15 @@ function fetchOrder() {
 				orderDiv.innerHTML += "<p>No order, for now...</p>";
 			} else {
 				// Bila ada order buat div baru untuk orderan, tetap fetch
-				for(let data of orderData) {
-					const orderChildDiv = document.createElement("article");
-					orderChildDiv.innerHTML += `
-                        <p>Latitude: ${data.userLat}</p>
-                        <p>Longitude: ${data.userLon}</p>
-                        <p>User Problem: ${data.userProb}</p>
-                        <p>Status: ${data.montirStatus}</p>
-                        <button onclick="takeOrder('${data._id}')" id='${data._id}'>Take Order</button>
+				const orderChildDiv = document.createElement("article");
+				orderChildDiv.innerHTML += `
+                        <p>Latitude: ${orderData[0].userLat}</p>
+                        <p>Longitude: ${orderData[0].userLon}</p>
+                        <p>User Problem: ${orderData[0].userProb}</p>
+                        <p>Status: ${orderData[0].montirStatus}</p>
+                        <button onclick="takeOrder('${orderData[0]._id}')" id='${orderData[0]._id}'>Take Order</button>
                     `;
-					orderDiv.append(orderChildDiv);
-				}
+				orderDiv.append(orderChildDiv);
 			}
 		})
 		.catch(error => showError(error));

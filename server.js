@@ -78,9 +78,12 @@ app.post("/submit-order", (req, res) => {
 
 // Route untuk montir mengambil data orderan yang aktif dan belum ada montir yang mengambil order
 app.get("/get-order", (req, res) => {
-	databaseOrder.find({orderStatus: "active", montirStatus: "fetching-montir"}, {userKey: 0}, (err, docs) => {
-		res.json(docs);
-	});
+	databaseOrder.find({ orderStatus: "active", montirStatus: "fetching-montir" }, { userKey: 0 })
+		.sort({ postedAt: 1 }) // Sort from oldest
+		.limit(1) // Limit to 1
+		.exec((err, docs) => { // Idk i found it on stackoverflow https://stackoverflow.com/questions/56113318/how-to-sort-find-query-by-date
+			res.json(docs);
+		});
 });
 
 // Route yang digunakan ketika montir mengambil orderan dari data

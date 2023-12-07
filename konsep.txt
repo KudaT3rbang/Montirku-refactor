@@ -9,6 +9,7 @@ montirKey - (eg. 9876)
 montirLat - (Current montir lat)
 montirLon - (Current montir lon)
 montirStatus - (Fetching-Montir, Montir-OTW, Montir-Arrived)
+postedAt - (Date)
 
 ### Database User
 id - nedbID
