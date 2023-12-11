@@ -14,7 +14,9 @@
     <title>Search for montir</title>
 </head>
 <body>
+    <a class="log-out" href="#" onclick="logout()">Log Out</a>
     <main class="container" id="main-container">
+        <div id="loginStatus"></div>
         <hgroup>
             <h1>Report Your Problem</h1>
             <p id="desc">Your current position is shown on the map.</p>
@@ -26,6 +28,7 @@
             <button id="problemButton">Report Problem</button>
         </form>
     </main>
+    <script src="./js/checklogin.js"></script>
     <script src="./js/getmontir.js"></script>
 </body>
 </html>
