@@ -43,13 +43,14 @@ function checkOrderStatus(keyType, keyValue, res) {
 }
 
 // Fungsi mengambil key user/montir untuk menyelesaikan orderan
-function overwriteOrder(keyType, keyValue, status, res) {
+function overwriteOrder(keyType, keyValue, status, price, res) {
 	let query = {
-		orderStatus: "active",
+		orderStatus: "active"
 	};
 	query[keyType] = keyValue;
 	let overwrite = {
-		orderStatus: status
+		orderStatus: status,
+		orderPrice: price
 	};
 	databaseOrder.update(query, {$set: overwrite}, {}, () => {
 		databaseOrder.loadDatabase();
@@ -133,25 +134,26 @@ app.post("/update-location-user", (req, res) => {
 // Route yang digunakan ketika user menyelesaikan orderan
 app.post("/finish-order-user", (req, res) => {
 	const dataKey = req.body.userKey;
-	overwriteOrder("userKey", dataKey, "finished", res);
+	overwriteOrder("userKey", dataKey, "finished", 0, res);
 });
 
 // Route yang digunakan ketika user menyelesaikan orderan
 app.post("/cancel-order-user", (req, res) => {
 	const dataKey = req.body.userKey;
-	overwriteOrder("userKey", dataKey, "cancelled", res);
+	overwriteOrder("userKey", dataKey, "cancelled", 0, res);
 });
 
 // Route yang digunakan ketika user menyelesaikan orderan
 app.post("/finish-order-montir", (req, res) => {
 	const dataKey = req.body.montirKey;
-	overwriteOrder("montirKey", dataKey, "finished", res);
+	const orderPrice = req.body.orderPrice;
+	overwriteOrder("montirKey", dataKey, "finished", orderPrice, res);
 });
 
 // Route yang digunakan ketika user menyelesaikan orderan
 app.post("/cancel-order-montir", (req, res) => {
 	const dataKey = req.body.montirKey;
-	overwriteOrder("montirKey", dataKey, "cancelled", res);
+	overwriteOrder("montirKey", dataKey, "finished", 0, res);
 });
 
 app.post("/montir-arrived", (req, res) => {

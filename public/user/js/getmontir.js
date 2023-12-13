@@ -52,7 +52,8 @@ function submitOrder() {
 				montirLat: "",
 				montirLon: "",
 				montirStatus: "fetching-montir",
-				postedAt: Date.now()
+				postedAt: Date.now(),
+				orderPrice: ""
 			};
 
 			const option = {

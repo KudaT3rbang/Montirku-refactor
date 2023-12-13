@@ -10,6 +10,7 @@ montirLat - (Current montir lat)
 montirLon - (Current montir lon)
 montirStatus - (Fetching-Montir, Montir-OTW, Montir-Arrived)
 postedAt - (Date)
+orderPrice - (Price)
 
 ### Database User
 id - nedbID

@@ -31,28 +31,6 @@ function cancelOrder() {
 		});
 }
 
-function finishOrder() {
-	const finishButton = document.getElementById("finishButton");
-	finishButton.setAttribute("aria-busy", "true");
-	const data = {
-		userKey: key,
-	};
-  
-	const option = {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify(data)
-	};
-	fetch("/finish-order-user", option)
-		.then(response => {
-			if(response) {
-				window.location.href = "getmontir.html";
-			}
-		});
-}
-
 // Tambahkan marker user dan montir
 function addMarker(userLon, userLat, montirLon, montirLat) {
 	groupMarker.clearLayers();
@@ -114,6 +92,8 @@ function checkOrder() {
 				clearInterval(intervalUploadLocation);
 				clearInterval(intervalCheckOrder);
 				orderStatusText.innerText = "There is no active order";
+				const cancelButtonExist = document.getElementById("cancelButton");
+				cancelButtonExist.remove();
 			} else if(result.montirStatus == "fetching-montir") {
 				const cancelButtonExist = document.getElementById("cancelButton");
 				if (!cancelButtonExist) {
@@ -139,16 +119,16 @@ function checkOrder() {
 				}
 			} else {
 				clearInterval(intervalUploadLocation);
-				clearInterval(intervalCheckOrder);
+				// clearInterval(intervalCheckOrder);
 				orderStatusText.innerText = "Montir is arrived!";
 				addMarker(result.userLon, result.userLat, result.montirLon, result.montirLat);
-				const finishButtonExist = document.getElementById("finishButton");
-				if (!finishButtonExist) {
-					const buttonDone = document.createElement("button");
-					buttonDone.textContent = "Finish Order";
-					buttonDone.setAttribute("id", "finishButton");
-					buttonDone.onclick = () => finishOrder();
-					divCurrentOrder.appendChild(buttonDone);
+				if (!cancelButtonExist) {
+					const buttonCancel = document.createElement("button");
+					buttonCancel.classList.add("warning");
+					buttonCancel.textContent = "Cancel Order";
+					buttonCancel.setAttribute("id", "cancelButton");
+					buttonCancel.onclick = () => cancelOrder();
+					divCurrentOrder.appendChild(buttonCancel);
 				}
 			}
 		})
