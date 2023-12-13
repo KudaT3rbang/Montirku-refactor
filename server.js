@@ -57,6 +57,20 @@ function overwriteOrder(keyType, keyValue, status, res) {
 	res.end();
 }
 
+function orderHistory(keyType, keyValue, res) {
+	let query = {
+		orderStatus: { $in: ["finished", "cancelled"] },
+	};
+	query[keyType] = keyValue;
+	databaseOrder.find(query, {userKey: 0, montirKey: 0}, (err, docs) => {
+		if(docs.length == 0) {
+			res.json({orderHistory: false});
+		} else {
+			res.json(docs);
+		}
+	});
+}
+
 // Route untuk cek apakah user memiliki order aktif
 app.post("/check-order-user", (req, res) => {
 	const dataKey = req.body.userKey;
@@ -176,4 +190,14 @@ app.post("/log-in", (req, res) => {
 			});
 		}
 	});
+});
+
+app.post("/order-history-user", (req, res) => {
+	let data = req.body.userKey;
+	orderHistory("userKey", data, res);
+});
+
+app.post("/order-history-montir", (req, res) => {
+	let data = req.body.montirKey;
+	orderHistory("montirKey", data, res);
 });

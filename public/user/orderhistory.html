@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/pico.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -11,28 +11,24 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
-    <title>Current Order</title>
+    <title>Order History</title>
 </head>
 <body>
     <a class="log-out" href="#" onclick="logout()">Log Out</a>
-    <main class="container">
-        <nav aria-label="breadcrumb">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li>Current Order</li>
-            </ul>
-        </nav>
-    <div id="loginStatus"></div>
-    <hgroup>
-        <h1>Current Order</h1>
-        <p id="orderStatus"></p>
-    </hgroup>
-        <div id="currentOrder">
-            <div id="map"></div>
-            <br>
-        </div>
+    <main class="container" id="main-container">
+    <nav aria-label="breadcrumb">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li>Order History</li>
+        </ul>
+    </nav>
+        <hgroup>
+            <h1>Order History</h1>
+            <p id="desc">Your Order History Will Appear Here.</p>
+        </hgroup>
+        <div id="orderHistory"></div>
     </main>
     <script src="./js/checklogin.js"></script>
-    <script src="./js/currentorder.js"></script>
+    <script src="./js/orderhistory.js"></script>
 </body>
 </html>

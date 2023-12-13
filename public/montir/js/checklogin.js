@@ -15,6 +15,7 @@ if(localStorage.getItem("montirKey") === null) {
     `;
 }
 
+// eslint-disable-next-line no-unused-vars
 function logout() {
 	localStorage.clear();
 	location.reload(); 

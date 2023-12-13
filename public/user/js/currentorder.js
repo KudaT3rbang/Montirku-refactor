@@ -56,7 +56,6 @@ function finishOrder() {
 // Tambahkan marker user dan montir
 function addMarker(userLon, userLat, montirLon, montirLat) {
 	groupMarker.clearLayers();
-	orderStatusText.innerText = "Montir is on the way";
 	const userMarker = L.marker({ lng: userLon, lat: userLat });
 	const montirMarker = L.marker({ lng: montirLon, lat: montirLat });
 
@@ -127,6 +126,7 @@ function checkOrder() {
 				}
 				orderStatusText.innerText = "Searching for montir";
 			} else if(result.montirStatus == "montir-otw") {
+				orderStatusText.innerText = "Montir is on the way";
 				addMarker(result.userLon, result.userLat, result.montirLon, result.montirLat);
 				const cancelButtonExist = document.getElementById("cancelButton");
 				if (!cancelButtonExist) {
@@ -140,6 +140,7 @@ function checkOrder() {
 			} else {
 				clearInterval(intervalUploadLocation);
 				clearInterval(intervalCheckOrder);
+				orderStatusText.innerText = "Montir is arrived!";
 				addMarker(result.userLon, result.userLat, result.montirLon, result.montirLat);
 				const finishButtonExist = document.getElementById("finishButton");
 				if (!finishButtonExist) {

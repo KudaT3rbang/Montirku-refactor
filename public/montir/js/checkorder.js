@@ -20,6 +20,7 @@ function fetchOrder() {
 				// Bila ada order buat div baru untuk orderan, tetap fetch
 				const orderChildDiv = document.createElement("article");
 				orderChildDiv.innerHTML += `
+						<header class="no-bottom-margin">Order No. ${orderData[0]._id}</header> 
                         <p>Latitude: ${orderData[0].userLat}</p>
                         <p>Longitude: ${orderData[0].userLon}</p>
                         <p>User Problem: ${orderData[0].userProb}</p>
