@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/pico.css">
+    <title>Login Admin Page</title>
+</head>
+<body>
+    <main class="container custom-index-container">
+        <div id="loginStatus"></div>
+        <hgroup>
+            <h1>Log In Page</h1>
+            <p>Log in into admin account.</p>
+        </hgroup>
+        <form>
+            <label for="username">
+                Username
+                <input type="text" id="userName" name="username" placeholder="Username" required>
+            </label>
+            <label for="password">
+                Password
+            <input type="password" id="userPassword" name="userpassword" placeholder="Password" required>
+            
+            </label>
+            <button type="submit" id="loginButton">Log In</button>
+        </form>
+        <p class="center-text">New User? <a href="signup.html">Sign Up</a></p>
+    </main>
+    <script src="./js/login.js"></script>
+</body>
+</html>

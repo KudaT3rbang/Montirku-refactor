@@ -16,17 +16,24 @@
 <body>
     <a class="log-out" href="#" onclick="logout()">Log Out</a>
     <main class="container" id="main-container">
-        <nav aria-label="breadcrumb">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li>Get Montir</li>
-            </ul>
-        </nav>
         <div id="loginStatus"></div>
-        <div id="desc"></div>
-        <div id="serviceSelection"></div>
+        <div id="submitStatus"></div>
+        <form id="addForm">
+            <label for="orderType" id="orderTypeLabel">Order Type</label>
+            <input type="text" name="orderType" id="orderType" required>
+
+            <label for="orderName" id="orderNameLabel">Order Name</label>
+            <input type="text" name="orderName" id="orderName" required>
+
+            <label for="orderPrice" id="orderPriceLabel">Order Price</label>
+            <input type="text" name="orderPrice" id="orderPrice" required>
+
+            <label for="orderDesc" id="orderDescLabel">Order Description</label>
+            <input type="text" name="orderDesc" id="orderDesc" required>
+            <button id="submitButton">Submit Service</button>
+        </form>
     </main>
     <script src="./js/checklogin.js"></script>
-    <script src="./js/getmontir.js"></script>
+    <script src="./js/addservice.js"></script>
 </body>
 </html>

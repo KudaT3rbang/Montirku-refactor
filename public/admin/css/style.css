@@ -1,0 +1,15 @@
+.inline-button {
+    display: inline-block;
+    width: 30vw;
+    text-decoration: none;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.log-out {
+    display: block;
+    text-align: right;
+    margin: 0 10px;
+}

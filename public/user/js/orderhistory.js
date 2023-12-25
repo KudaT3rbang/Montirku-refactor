@@ -25,7 +25,7 @@ function getOrderHistory() {
 					orderChildDiv.innerHTML += `
                         <header>Order No. ${data._id}</header>
                         <p>Posted At: ${dateParsed}</p>
-                        <p>User Problem: ${data.userProb}</p>
+                        <p>User Problem: ${data.orderName}</p>
                         <p>Status: ${data.orderStatus}</p>
                     `;
 					orderHistoryDiv.append(orderChildDiv);

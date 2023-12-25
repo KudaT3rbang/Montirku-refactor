@@ -44,27 +44,11 @@ function cancelOrder() {
 		});
 }
 
-function finishOrderModal() {
+function finishOrder() {
 	const finishButton = document.getElementById("finishButton");
 	finishButton.setAttribute("aria-busy", "true");
-	const priceInput = document.getElementById("priceInput");
-	priceInput.innerHTML += `
-        <dialog open>
-        <article>
-        <header>Input Service Price</header>
-		<p>Please input the service price.</p>
-        <input type="text" id="price" name="price" placeholder="Input Price" required>
-		<button onclick="finishOrder()">Finish Order</button>
-        </article>
-        </dialog>
-    `;
-}
-
-function finishOrder() {
-	const price = document.getElementById("price").innerText;
 	const data = {
 		montirKey: key,
-		orderPrice: price
 	};
   
 	const option = {
@@ -180,7 +164,7 @@ function checkOrder() {
 					const buttonFinish = document.createElement("button");
 					buttonFinish.textContent = "Finish Order";
 					buttonFinish.setAttribute("id", "finishButton");
-					buttonFinish.onclick = () => finishOrderModal();
+					buttonFinish.onclick = () => finishOrder();
 					divCurrentOrder.appendChild(buttonFinish);
 				}
 			}

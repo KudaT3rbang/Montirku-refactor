@@ -19,6 +19,9 @@ databaseOrder.loadDatabase();
 const databaseUser = new Datastore("databaseUser.db");
 databaseUser.loadDatabase();
 
+const databaseService = new Datastore("databaseService.db");
+databaseService.loadDatabase();
+
 // Fungsi untuk mencek status orderan dan update koordinat user dan montir
 function checkOrderStatus(keyType, keyValue, res) {
 	let query = {
@@ -202,4 +205,16 @@ app.post("/order-history-user", (req, res) => {
 app.post("/order-history-montir", (req, res) => {
 	let data = req.body.montirKey;
 	orderHistory("montirKey", data, res);
+});
+
+app.post("/add-service", (req, res) => {
+	let data = req.body;
+	databaseService.insert(data);
+	res.json({succes: 1});
+});
+
+app.get("/service-selection", (req, res) => {
+	databaseService.find({}, (err, docs) => {
+		res.json(docs);
+	});
 });

@@ -23,7 +23,7 @@ function fetchOrder() {
 						<header class="no-bottom-margin">Order No. ${orderData[0]._id}</header> 
                         <p>Latitude: ${orderData[0].userLat}</p>
                         <p>Longitude: ${orderData[0].userLon}</p>
-                        <p>User Problem: ${orderData[0].userProb}</p>
+                        <p>User Problem: ${orderData[0].orderName}</p>
                         <p>Status: ${orderData[0].montirStatus}</p>
                         <button onclick="takeOrder('${orderData[0]._id}')" id='${orderData[0]._id}'>Take Order</button>
                     `;

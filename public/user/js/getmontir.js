@@ -1,59 +1,31 @@
 /* eslint-disable no-undef */
 let key = localStorage.getItem("customerKey");
 const mainContainer = document.getElementById("main-container");
-const submitButton = document.getElementById("problemButton");
+const serviceSelection = document.getElementById("serviceSelection");
 const descOrder = document.getElementById("desc");
-const htmlMap = document.getElementById("map");
-const inputForm = document.getElementById("reportForm");
-var map = L.map("map").setView([0, 0], 13);
-
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-	attribution: "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>"
-}).addTo(map);
-
-// Tampilkan lokasi sekarang di map
-function showLocation() {
-	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(location => {
-			let lat = location.coords.latitude;
-			let lon = location.coords.longitude;
-			L.marker([lat, lon]).addTo(map);
-			map.panTo([lat, lon]);
-		}, showError);
-	} else {
-		alert("Geolocation is not supported by this browser.");
-	}
-}
-
-// Hilangkan form dan map bila ada order aktif
-function hideForm() {
-	htmlMap.style.display = "none";
-	inputForm.style.display = "none";
-	submitButton.style.display = "none";
-	descOrder.style.display = "none";
-}
 
 // Submit order ke server dengan data
-function submitOrder() {
-	submitButton.setAttribute("aria-busy", "true");
+function submitOrder(orderTypeInput, orderNameInput, orderPriceInput, buttonElement) {
+	const buttonSelf = buttonElement;
+	buttonSelf.setAttribute("aria-busy", "true");
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(position => {
 			const lat = position.coords.latitude;
 			const lon = position.coords.longitude;
-			const problem = document.getElementById("userProblem").value;
 
 			const data = {
 				orderStatus: "active",
+				orderType: orderTypeInput,
+				orderName: orderNameInput,
+				orderPrice: orderPriceInput,
 				userKey: key,
 				userLat: lat,
 				userLon: lon,
-				userProb: problem,
 				montirKey: "",
 				montirLat: "",
 				montirLon: "",
 				montirStatus: "fetching-montir",
-				postedAt: Date.now(),
-				orderPrice: ""
+				postedAt: Date.now()
 			};
 
 			const option = {
@@ -98,7 +70,7 @@ function checkOrder() {
 		.then(result => {
 			// Hide form bila ada order aktif
 			if (result.orderExist == 1) {
-				hideForm();
+				descOrder.style.display = "none";
 				const divOrderActive = document.createElement("div");
 				divOrderActive.innerHTML += `
 				<p>There is active order, please check it at active order page.</p>
@@ -107,20 +79,34 @@ function checkOrder() {
 				mainContainer.append(divOrderActive);
 			} 
 			else {
-				showLocation();
+				descOrder.innerText = "Select Service";
+				fetchSelection();
 			}
 		})
 		.catch(error => showError(error));
 }
 
+function fetchSelection() {
+	fetch("/service-selection")
+		.then(response => response.json())
+		.then(result => {
+			for(let data of result) {
+				const serviceChildDiv = document.createElement("article");
+				serviceChildDiv.innerHTML +=
+				`
+				<h3>${data.orderName}</h3>
+				<p>${data.orderDesc}</p>
+				<p>Price: Rp. ${data.orderPrice}</p>
+				<button onclick="submitOrder('${data.orderType}', '${data.orderName}', '${data.orderPrice}', this)">Take Service</button>
+                `;
+				serviceSelection.append(serviceChildDiv);
+			}
+		});
+}
+
 function showError(error) {
 	console.error(error);
 }
-
-submitButton.addEventListener("click", (e) => {
-	e.preventDefault();
-	submitOrder();
-});
 
 window.onload = () => {
 	checkOrder();

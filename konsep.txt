@@ -1,10 +1,14 @@
-### Database
+### Database Order
 id - nedbID
+orderType - (periodic-service, road-assist, other-service)
+orderName:
+periodic-service : Standard Service, Full Check
+road-assist : Car Breakdown,Towing Service, Fuel Delivery, Battery Jump Start, Spare Tire Installation
+other-service : Oil Change, Detailing, Tune-Up
 orderStatus - (Active, Finished, Cancelled)
 userKey - (eg. 1234)
 userLat - (Current lat)
 userLon - (Current lon)
-userProb - (String)
 montirKey - (eg. 9876)
 montirLat - (Current montir lat)
 montirLon - (Current montir lon)
